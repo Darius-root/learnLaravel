@@ -16,13 +16,13 @@
                 @csrf
                 @method($property->exists ? 'PUT' : 'POST')
 
-                <div class="row ">
+                <div class="row Option">
                     <div class="col"> @include('shared.input', [
                         'label' => 'Title',
                         'name' => 'title',
                         'value' => $property->title,
                     ])</div>
-                     <div class="col"> @include('shared.input', [
+                    <div class="col"> @include('shared.input', [
                         'label' => 'Surface',
                         'name' => 'surface',
                         'type' => 'number',
@@ -36,12 +36,12 @@
                             'value' => $property->price,
                         ])
                     </div>
-                   
+
                 </div>
-               
 
 
-              
+
+
 
                 <div class="row ">
                     <div class="col">
@@ -70,7 +70,7 @@
 
 
                 <div class="row ">
-                   
+
                     <div class="col">
                         @include('shared.input', [
                             'label' => 'address',
@@ -90,12 +90,12 @@
                             'value' => $property->postal_code,
                         ])
                     </div>
-                    
+
                     <div class="col">
                         @include('shared.input', [
                             'label' => 'rooms',
                             'name' => 'rooms',
-                            'type'=> 'number',
+                            'type' => 'number',
                             'value' => $property->rooms,
                         ])
                     </div>
@@ -107,15 +107,23 @@
                             'type' => 'textarea',
                         ])
                     </div>
-                   
+
                 </div>
-                <div class="col">
-                    @include(
-                        'shared.checkbox',
-                        ['label' => 'sold', 'name' => 'sold',
-],
-                        ['value' => $property->sold]
-                    )</div>
+               
+                <div class="row">
+                    <div class="col">
+                        @include(
+                            'shared.checkbox',
+                            ['label' => 'sold', 'name' => 'sold'],
+                            ['value' => $property->sold]
+                        )</div>
+                    <div class="col">
+                        @include(
+                            'shared.select',
+                            ['label' => 'options', 'name' => 'options'],
+                            ['value' => $property->options()->pluck('id'), 'multiple'=>true, 'options'=>$options]
+                        )</div>
+                </div>
 
                 <button class="btn btn-primary">
                     {{ $property->exists ? 'Modifier' : 'Créer' }}

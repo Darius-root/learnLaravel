@@ -31,6 +31,7 @@
 
 	<!-- endinject -->
   <link rel="stylesheet" href="{{asset('vendors/sweetalert2/sweetalert2.min.css')}}">
+  <link rel="stylesheet" href="{{asset('vendors/select2/select2.min.css')}}">
 	<!-- End plugin css for this page -->
 
 	<!-- inject:css -->
@@ -87,7 +88,25 @@
             </div>
           </li>
         
-        
+          <li class="nav-item nav-category">Options</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#options" role="button" aria-expanded="false" aria-controls="options">
+              <i class="link-icon" data-feather="mail"></i>
+              <span class="link-title">Options</span>
+              <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse" id="options">
+              <ul class="nav sub-menu">
+                <li class="nav-item">
+                  <a href="{{route('admin.option.create')}}" class="nav-link">create</a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('admin.option.index')}}" class="nav-link">listing</a>
+                </li>
+                
+              </ul>
+            </div>
+          </li>
         
         
          
@@ -156,7 +175,6 @@
 
 
         <div class="row">
-          <button class="btn btn-primary" onclick="showSwal('mixin')">Click here!</button>
 
           @yield('content')
 
@@ -183,7 +201,7 @@
 </div>
 
 	<script src="{{asset('vendors/core/core.js')}}"></script>
-	<!-- endinject -->7
+	<!-- endinject -->
   
 </script>
 	<!-- Plugin js for this page -->
@@ -203,20 +221,60 @@
 
 	<!-- Plugin js for this page -->
   <script src="{{asset('vendors/sweetalert2/sweetalert2.min.js')}}"></script>
-  @if(session('success'))
+  <script src="{{asset('vendors/select2/select2.min.js')}}"></script>
 
-  <script>
-    showSwal('mixin')   
-</script>
-@endif
+
   <script src="{{asset('vendors/feather-icons/feather.min.js')}}"></script>
   <script src="{{asset('js/sweet-alert.js')}}"></script>
+  <script src="{{asset('js/select2.js')}}"></script>
 
 
+  @if(session('success'))
+  <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+      
+      Toast.fire({
+        icon: 'success',
+        title: '{{session('success')}}'
+      })  ;   
+  </script>
 
+<script>
+  function confirmDelete(event) {
+      event.preventDefault();
+      const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+              confirmButton: 'btn btn-success',
+              cancelButton: 'btn btn-danger me-2'
+          },
+          buttonsStyling: false,
+      })
+      
+      swalWithBootstrapButtons.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'me-2',
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, cancel!',
+          reverseButtons: true
+      }).then((result) => {
+          if (result.value) {
+              event.target.closest('form').submit();
+          }
+      })
+  }
+  </script>
+@endif
 <style>
 
-    
 </style>
 </body>
 </html>    

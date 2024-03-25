@@ -12,8 +12,7 @@
     margin-left: $sidebar-folded-width;
     .navbar {
       width: calc(100% - #{$sidebar-folded-width});
-      left: $sidebar-folded-width;
-      right: 0;
+     
     }
   }
   &:not(.open-sidebar-folded) {

@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PropertyFormResquest;
+use App\Models\Option;
 use App\Models\Property;
-use Illuminate\Http\Request;
+
+
+use function PHPUnit\Framework\returnSelf;
 
 class PropertyContoller extends Controller
 {
@@ -24,8 +27,10 @@ class PropertyContoller extends Controller
      */
     public function create()
     {
+
+        
         // Retourne la vue 'admin.properties.form' en lui passant une nouvelle instance de la classe Property.
-        return view('admin.properties.form', ['property' =>  new Property()]);
+        return view('admin.properties.form', ['property' =>  new Property(), 'options'=> Option::pluck('name','id')]);
 
     }
 
@@ -35,13 +40,13 @@ class PropertyContoller extends Controller
     public function store(PropertyFormResquest $request)
     {
         $validatedData = $request->validated();
-    
+
         // Créer une nouvelle instance de la propriété avec les données validées
         $property = Property::create($validatedData);
-/*         sweetalert()->addWarning('save with success.');
- */
+        $property->options()->sync($request->validated('options'));
+
         // Redirection vers l'index des propriétés avec un message de succès
-        return redirect()->route('admin.property.index' )->with('success', 'La propriété a bien été enregistrée');
+        return to_route('admin.property.index' )->with('success', 'La propriété a bien été enregistrée');
     }
     
 
@@ -56,24 +61,34 @@ class PropertyContoller extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Property $property)
     {
-        return view ('admin.properties.edit');
+        return view ('admin.properties.form',['property' => $property, 'options'=> Option::pluck('name','id')]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PropertyFormResquest $request, Property $property)
     {
-        //
+        $validatedData=$request->validated();
+      
+        // Synchroniser les options de la propriété avec les options sélectionnées dans le formulaire.
+        // Cette ligne de commande permet de mettre à jour la relation belongtomany 'options' en utilisant les ID des options sélectionnées dans le formulaire.
+        // Les options non sélectionnées seront supprimées de la relation, les options sélectionnées seront ajoutées ou mises à jour dans la relation.
+        $property->options()->sync($request->validated('options'));
+        $property->update($validatedData);
+
+        return to_route('admin.property.index' )->with('success', 'La propriété a bien été mis à jour');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Property $property)
     {
-        //
+
+        $property->delete();
+        return to_route('admin.property.index' )->with('success', 'La propriété a bien été supprimée');
     }
 }
