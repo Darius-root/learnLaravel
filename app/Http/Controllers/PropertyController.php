@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PropertyContactRequest;
 use App\Http\Requests\SearchPropertiesRequest;
+use App\Mail\PropertyContactMail;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PropertyController extends Controller
 {
@@ -13,14 +16,13 @@ class PropertyController extends Controller
      */
     public function index(SearchPropertiesRequest $request)
     {
-
         $query=Property::query();
+
         //$request->has('price')
         if ($price=$request->validated('price')) {
            $query=$query->where("price",'<=',$price);
         }
-/*          dd($query);
- */        return view('property.index',['properties'=> $query->paginate('5'),'input'=>$request->validated()]);
+        return view('property.index',['properties'=> $query->paginate('5'),'input'=>$request->validated()]);
     }
 
     /**
@@ -50,6 +52,8 @@ class PropertyController extends Controller
         if ($slug!==$eSlug) {
             return to_route('property.show',['slug'=>$eSlug, 'property'=>$property]);
         }
+
+
         return view('property.show', ['property'=>$property]);
     }
 
@@ -75,5 +79,12 @@ class PropertyController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function contact(Property $property , PropertyContactRequest $request)
+    {
+        Mail::send(new PropertyContactMail($property, $request->validated())); 
+        return back()->with('success', 'Thanks for contacting us!');
     }
 }

@@ -66,6 +66,54 @@
     </nav>
 
     @yield('content')
+
+    
+	<script src="{{asset('vendors/core/core.js')}}"></script>
+	<!-- endinject -->
+  
+</script>
+	<!-- Plugin js for this page -->
+  <script src="{{asset('vendors/chartjs/Chart.min.js')}}"></script>
+  <script src="{{asset('vendors/apexcharts/apexcharts.min.js')}}"></script>
+	<!-- End plugin js for this page -->
+
+	<!-- inject:js -->
+	<script src="{{asset('vendors/feather-icons/feather.min.js')}}"></script>
+	<script src="{{asset('js/template.js')}}"></script>
+	<!-- endinject -->
+
+	<!-- Custom js for this page -->
+  <script src="{{asset('js/dashboard.js')}}"></script>
+	<!-- End custom js for this page -->
+
+
+	<!-- Plugin js for this page -->
+  <script src="{{asset('vendors/sweetalert2/sweetalert2.min.js')}}"></script>
+  <script src="{{asset('vendors/select2/select2.min.js')}}"></script>
+
+
+  <script src="{{asset('vendors/feather-icons/feather.min.js')}}"></script>
+  <script src="{{asset('js/sweet-alert.js')}}"></script>
+  <script src="{{asset('js/select2.js')}}"></script>
+
+
+  @if(session('success'))
+  <script>
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+      
+      Toast.fire({
+        icon: 'success',
+        title: '{{session('success')}}'
+      })  ;   
+  </script>
+
+@endif
 </body>
 
 </html>

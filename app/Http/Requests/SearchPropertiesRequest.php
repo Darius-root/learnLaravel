@@ -22,6 +22,8 @@ class SearchPropertiesRequest extends FormRequest
     public function rules(): array
     {
         return [
+             // En d'autres termes, le champ 'price' peut être vide ou contenir un nombre positif ou nul.
+   
             'price'=>['numeric','gte:0','nullable']
         ];
     }
