@@ -34,6 +34,7 @@ class PropertyFormResquest extends FormRequest
             'postal_code'=>['required', 'min:8'],
             'sold'=>['required', ' boolean'],
             'options'=>['required', 'exists:options,id','array'],
+            'image'=>[ 'image', 'mimes:jpeg,jpg,png,gif', 'max:2048'],
 
 
         ];

@@ -42,6 +42,7 @@
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
+    @livewireStyles
 </head>
 
 <body>
@@ -63,6 +64,22 @@
         -->
         <a href="{{route('property.index')}}" class="nav-link {{ Str::contains($route, 'property.') ? 'active' : '' }}">Biens</a>
         <!-- Fin de l'explication -->
+        <a href="{{route('animation')}}" class="nav-link {{ Str::contains($route, 'property.') ? 'active' : '' }}">Animation</a>
+        <a href="{{route('fullPage')}}" class="nav-link {{ Str::contains($route, 'property.') ? 'active' : '' }}">FullPage component</a>
+
+        @if (Route::has('login'))
+
+            @auth
+                <!-- Lien vers la page d'accueil -->
+                <a href="{{ route('admin.property.index') }}" class="nav-link">Home</a>
+            @else
+                <!-- Lien vers la page de connexion -->
+                <a href="{{ route('login') }}" class="nav-link">Log in</a>
+
+              
+            @endauth
+        </div>
+    @endif
     </nav>
 
     @yield('content')
@@ -114,6 +131,9 @@
   </script>
 
 @endif
+
+@livewireScripts
+
 </body>
 
 </html>

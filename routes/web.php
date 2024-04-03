@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PropertyContoller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PropertyController;
+use App\Livewire\FillPageComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,7 @@ Route::get('/biens/{slug}-{property}', [PropertyController::class, 'show'])->nam
     ]
 );
 
-Route::get('/biens/{property}/contact', [PropertyController::class, 'contact'])->name('property.contact')->where(
+Route::post('/biens/{property}/contact', [PropertyController::class, 'contact'])->name('property.contact')->where(
     [
         'properties' => $idRegex
     ]
@@ -48,3 +49,11 @@ Route::prefix('admin')->middleware('auth')-> name('admin.')->group(function () {
     Route::resource('property', PropertyContoller::class)->except(['show']);
     Route::resource('option', OptionController::class)->except(['show']);
 });
+
+
+Route::get('/livewire', function () {
+    return view('livewire.animation');
+})->name('animation');
+
+
+Route::get('fullPage', FillPageComponent::class)->name('fullPage');

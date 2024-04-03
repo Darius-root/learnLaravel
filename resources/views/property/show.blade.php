@@ -13,6 +13,8 @@
                         <h4 class="card-title text-warning">Intitulé du bien : <strong>{{ $property->title }}</strong></h4>
                         <p class="card-subtitle text-warning">Description du bien : {{ $property->description }}</p>
                     </div>
+
+                    
                     <img class="card-img-top" src="{{ $property->image }}" alt="{{ $property->title }}">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
@@ -57,7 +59,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('property.contact', [$property]) }}" method="POST">
+                <form  action="{{ route('property.contact', $property) }}" method="post" >
 
                   @csrf
                     <div class="row">
@@ -95,7 +97,7 @@
                     ])
 
 
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" type="submit">
 {{--                         {{ $property->exists ? 'Modifier' : 'Créer' }}
  --}}         
 

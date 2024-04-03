@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PropertyFormResquest;
 use App\Models\Option;
 use App\Models\Property;
-
+use Storage;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -39,8 +39,17 @@ class PropertyContoller extends Controller
      */
     public function store(PropertyFormResquest $request)
     {
-        $validatedData = $request->validated();
 
+        $validatedData = $request->validated();
+        $image=$request->validated('image');
+
+        if ($image !== null && !$image->getError()) {
+         
+      // enregistrer la nouvelle image
+            $imagePath = $image->store('propertyImage', 'public');
+            $validatedData['image'] = $imagePath;
+        }
+      // dd($validatedData['image']);
         // Créer une nouvelle instance de la propriété avec les données validées
         $property = Property::create($validatedData);
         $property->options()->sync($request->validated('options'));
@@ -71,7 +80,19 @@ class PropertyContoller extends Controller
      */
     public function update(PropertyFormResquest $request, Property $property)
     {
+
+
         $validatedData=$request->validated();
+    
+        $image=$request->validated('image');
+        if ($image !== null && !$image->getError()) {
+            // supprimer l'image précédente
+            Storage::disk('public')->delete($property->image);
+
+      // enregistrer la nouvelle image
+            $imagePath = $image->store('propertyImage', 'public');
+            $validatedData['image'] = $imagePath;
+        }
       
         // Synchroniser les options de la propriété avec les options sélectionnées dans le formulaire.
         // Cette ligne de commande permet de mettre à jour la relation belongtomany 'options' en utilisant les ID des options sélectionnées dans le formulaire.

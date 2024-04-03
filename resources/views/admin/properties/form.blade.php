@@ -109,7 +109,7 @@
                     </div>
 
                 </div>
-               
+
                 <div class="row">
                     <div class="col">
                         @include(
@@ -121,8 +121,21 @@
                         @include(
                             'shared.select',
                             ['label' => 'options', 'name' => 'options'],
-                            ['value' => $property->options()->pluck('id'), 'multiple'=>true, 'options'=>$options]
+                            [
+                                'value' => $property->options()->pluck('id'),
+                                'multiple' => true,
+                                'options' => $options,
+                            ]
                         )</div>
+
+                    <div class="col">
+                        @include('shared.input', [
+                            'label' => 'Fichier',
+                            'name' => 'image',
+                            'type' => 'file',
+                        ])
+                    </div>
+
                 </div>
 
                 <button class="btn btn-primary">

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Storage;
 use Str;
 
 /**
@@ -25,6 +27,7 @@ class Property extends Model
         'address',
         'postal_code',
         'sold',
+        'image'
         
     ];
 
@@ -47,4 +50,25 @@ class Property extends Model
      */
         return Str::slug($this->title);
     }
+
+
+    /**
+     * Scope to get available properties.
+     *
+     * This scope returns all properties that are not marked as sold.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAvailable(Builder $query): Builder{
+
+        // Apply a where clause to filter properties that are not marked as sold.
+        return $query->where('sold',false);
+    }
+
+
+
+    public function imageUrl():string{
+        return Storage::disk('public')->url($this->image);
+    }
+    
 }

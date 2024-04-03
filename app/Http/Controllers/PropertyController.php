@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContactRequestEvent;
 use App\Http\Requests\PropertyContactRequest;
 use App\Http\Requests\SearchPropertiesRequest;
 use App\Mail\PropertyContactMail;
@@ -82,9 +83,24 @@ class PropertyController extends Controller
     }
 
 
-    public function contact(Property $property , PropertyContactRequest $request)
+  /*   public function contact(Property $property , PropertyContactRequest $request)
     {
         Mail::send(new PropertyContactMail($property, $request->validated())); 
         return back()->with('success', 'Thanks for contacting us!');
+    } */
+    public function contact(Property $property , PropertyContactRequest $request)
+    {
+        //Evenement  d'envoi d'email   
+
+        //je met en place un ecouteur d'evenement et un listener je les associe dans le fichier  EventServiceProvider
+       
+       
+        event(new ContactRequestEvent($property, $request->validated()));
+
+        return back()->with('success', 'Thanks for contacting us!');
+
+
+
+      
     }
 }

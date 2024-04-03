@@ -23,8 +23,12 @@
             <h6 class="card-subtitle text-muted">{{$item->title}}</h6>
 
           </div>
-          <img src="holder.js/100x180/" alt="">
-          <div class="card-body">
+          @if ($item->image)
+              
+        
+          <img src="{{$item->imageurl()}}" class="card-img-top" alt="" style="width: 100%; height: 25vh; object-fit: cover;">
+
+          @endif          <div class="card-body">
           
             <a href="#" class="card-link">{{$item->surface}} m2</a>
             <a href="#" class="card-link">{{$item->city}}</a>
